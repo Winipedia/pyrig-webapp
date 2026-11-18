@@ -28,6 +28,7 @@ classifiers = [
 ]
 dependencies = [
   "pyrig>=19.38.2",
+  "reflex>=0.11.0",
 ]
 
 [project.urls]
@@ -84,6 +85,7 @@ root = "src"
 [tool.deptry.per_rule_ignores]
 DEP002 = [
   "pyrig",
+  "reflex",
 ]
 
 [tool.pytest]
