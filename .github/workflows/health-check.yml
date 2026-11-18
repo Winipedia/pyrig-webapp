@@ -1,0 +1,181 @@
+---
+"name": "Health Check"
+"on":
+  "workflow_dispatch": {}
+  "pull_request":
+    "types":
+      - "opened"
+      - "synchronize"
+      - "reopened"
+  "schedule":
+    -
+      "cron": "0 1 * * *"
+  "workflow_call": {}
+"permissions": {}
+"concurrency":
+  "group": "Health Check-${{ github.workflow }}-${{ github.ref }}"
+  "cancel-in-progress": true
+"run-name": "Health Check"
+"jobs":
+  "health-checks":
+    "name": "Health Checks"
+    "permissions":
+      "contents": "read"
+    "runs-on": "ubuntu-latest"
+    "timeout-minutes": 60
+    "steps":
+      -
+        "name": "Checkout Repository"
+        "id": "checkout-repository"
+        # ryl disable-line rule:line-length
+        "uses": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1"  # v7.0.1
+        "with":
+          "persist-credentials": false
+      -
+        "name": "Setup Package Manager"
+        "id": "setup-package-manager"
+        # ryl disable-line rule:line-length
+        "uses": "astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2"  # v10.3.3
+        "with":
+          "python-version": "3.15"
+      -
+        "name": "Update Dependencies"
+        "id": "update-dependencies"
+        "shell": "bash"
+        "run": "uv lock --upgrade"
+      -
+        "name": "Install Dependencies"
+        "id": "install-dependencies"
+        "shell": "bash"
+        "run": "uv sync"
+      -
+        "name": "Run Version Control Hooks"
+        "id": "run-version-control-hooks"
+        "shell": "bash"
+        "run": "uv run prek run --all-files --group=all"
+        "env":
+          "GH_TOKEN": "${{ secrets.GITHUB_TOKEN }}"
+  "matrix-health-checks":
+    "name": "Matrix Health Checks"
+    "permissions":
+      "contents": "read"
+    "runs-on": "${{ matrix.os }}"
+    "timeout-minutes": 120
+    "strategy":
+      "matrix":
+        "os":
+          - "ubuntu-latest"
+          - "windows-latest"
+          - "macos-latest"
+        "python-version":
+          - "3.12"
+          - "3.13"
+          - "3.14"
+          - "3.15"
+      "fail-fast": true
+    "steps":
+      -
+        "name": "Checkout Repository"
+        "id": "checkout-repository"
+        # ryl disable-line rule:line-length
+        "uses": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1"  # v7.0.1
+        "with":
+          "persist-credentials": false
+      -
+        "name": "Setup Package Manager"
+        "id": "setup-package-manager"
+        # ryl disable-line rule:line-length
+        "uses": "astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2"  # v10.3.3
+        "with":
+          "python-version": "${{ matrix.python-version }}"
+      -
+        "name": "Update Dependencies"
+        "id": "update-dependencies"
+        "shell": "bash"
+        "run": "uv lock --upgrade"
+      -
+        "name": "Install Dependencies"
+        "id": "install-dependencies"
+        "shell": "bash"
+        "run": "uv sync"
+      -
+        "name": "Run Tests"
+        "id": "run-tests"
+        "shell": "bash"
+        "run": "uv run pytest"
+      -
+        "name": "Upload Coverage Report"
+        "id": "upload-coverage-report"
+        # ryl disable-line rule:line-length
+        "uses": "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9"  # v7.0.2
+        "with":
+          "name": "coverage-${{ matrix.os }}-${{ matrix.python-version }}"
+          "path": "coverage.xml"
+          "if-no-files-found": "error"
+  "upload-coverage":
+    "name": "Upload Coverage"
+    "permissions":
+      "contents": "read"
+      "id-token": "write"  # required
+    "needs":
+      - "matrix-health-checks"
+    "runs-on": "ubuntu-latest"
+    "timeout-minutes": 30
+    "steps":
+      -
+        "name": "Checkout Repository"
+        "id": "checkout-repository"
+        # ryl disable-line rule:line-length
+        "uses": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1"  # v7.0.1
+        "with":
+          "persist-credentials": false
+      -
+        "name": "Download Coverage Reports"
+        "id": "download-coverage-reports"
+        # ryl disable-line rule:line-length
+        "uses": "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333"  # v8.0.2
+        "with":
+          "pattern": "coverage-*-*"
+          "path": "coverage-reports"
+          "merge-multiple": "false"
+      -
+        "name": "Upload Coverage"
+        "id": "upload-coverage"
+        # ryl disable-line rule:line-length
+        "uses": "codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5"  # v7.1.1
+        "with":
+          "directory": "coverage-reports"
+          "fail_ci_if_error": "true"
+          "use_oidc": "true"
+  "security-practices":
+    "name": "Security Practices"
+    "permissions":
+      "actions": "read"  # required
+      "contents": "read"
+      "id-token": "write"  # required
+      "security-events": "write"  # required
+    "uses": "$/.github/workflows/security-practices.yml"
+  "code-analysis":
+    "name": "Code Analysis"
+    "permissions":
+      "actions": "read"  # required
+      "contents": "read"
+      "security-events": "write"  # required
+    "uses": "$/.github/workflows/code-analysis.yml"
+  "health-check":
+    "name": "Health Check"
+    "needs":
+      - "health-checks"
+      - "matrix-health-checks"
+      - "upload-coverage"
+      - "security-practices"
+      - "code-analysis"
+    "runs-on": "ubuntu-latest"
+    "timeout-minutes": 1
+    "steps":
+      -
+        "name": "Aggregate Jobs"
+        "id": "aggregate-jobs"
+        "shell": "bash"
+        "run": "echo 'Aggregating jobs into one job.'"
+...

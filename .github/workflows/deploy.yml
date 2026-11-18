@@ -1,0 +1,36 @@
+---
+"name": "Deploy"
+"on":
+  "workflow_call":
+    "secrets":
+      "REPO_TOKEN":
+        "required": true
+"permissions": {}
+"concurrency":
+  "group": "Deploy-${{ github.workflow }}-${{ github.ref }}"
+  "cancel-in-progress": false
+"run-name": "Deploy"
+"jobs":
+  "repository":
+    "name": "Repository"
+    "permissions":
+      "contents": "read"
+    "secrets":
+      "REPO_TOKEN": "${{ secrets.REPO_TOKEN }}"
+    "uses": "$/.github/workflows/repository.yml"
+  "documentation":
+    "name": "Documentation"
+    "permissions":
+      "contents": "read"
+      "id-token": "write"  # required
+      "pages": "write"  # required
+    "secrets":
+      "REPO_TOKEN": "${{ secrets.REPO_TOKEN }}"
+    "uses": "$/.github/workflows/documentation.yml"
+  "package":
+    "name": "Package"
+    "permissions":
+      "contents": "read"
+      "id-token": "write"  # required
+    "uses": "$/.github/workflows/package.yml"
+...

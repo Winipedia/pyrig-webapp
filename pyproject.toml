@@ -1,0 +1,146 @@
+[project]
+name = "pyrig-webapp"
+version = "0.1.0"
+description = "A pyrig plugin to build web applications."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+license-files = [
+  "LICENSE",
+]
+authors = [
+  { name = "Winipedia", email = "winipedia@gmx.de" },
+]
+maintainers = [
+  { name = "Winipedia", email = "winipedia@gmx.de" },
+]
+keywords = [
+  "pyrig",
+]
+classifiers = [
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
+  "Typing :: Typed",
+]
+dependencies = [
+  "pyrig>=19.38.2",
+]
+
+[project.urls]
+Changelog = "https://github.com/Winipedia/pyrig-webapp/releases"
+Documentation = "https://Winipedia.github.io/pyrig-webapp"
+Homepage = "https://github.com/Winipedia/pyrig-webapp"
+Issues = "https://github.com/Winipedia/pyrig-webapp/issues"
+Source = "https://github.com/Winipedia/pyrig-webapp"
+
+[project.scripts]
+pyrig-webapp = "pyrig_runtime.rig.cli.main:main"
+
+[dependency-groups]
+dev = [
+  "actionlint-py>=1.7.12.25",
+  "bandit>=1.9.4",
+  "deptry>=0.25.1",
+  "detect-secrets>=1.5.0",
+  "hypofuzz>=25.11.1",
+  "hypothesis>=6.170.15",
+  "mkdocstrings[python]>=1.0.8",
+  "pre-commit-hooks>=6.0.0",
+  "prek>=0.5.11",
+  "pyflakes>=4.1.0",
+  "pyorder>=1.0.59",
+  "pyrig-opensource>=1.3.87",
+  "pyrig-plugin>=1.2.86",
+  "pytest>=9.2.0",
+  "pytest-cov>=7.1.0",
+  "pytest-randomly>=5.1.0",
+  "pytest-xdist>=3.8.0",
+  "ruff>=0.17.5",
+  "rumdl>=0.3.5",
+  "ryl>=0.30.0",
+  "shellcheck-py>=0.11.0.1",
+  "shfmt-py>=4.2.0",
+  "tombi>=1.11.3",
+  "ty>=0.0.106",
+  "typos>=1.52.2",
+  "vulture>=2.16",
+  "zensical>=0.1.2",
+  "zizmor>=1.32.0",
+]
+
+[build-system]
+requires = [
+  "uv-build",
+]
+build-backend = "uv_build"
+
+[tool.deptry]
+root = "src"
+
+[tool.deptry.per_rule_ignores]
+DEP002 = [
+  "pyrig",
+]
+
+[tool.pytest]
+addopts = [
+  "--cov-branch",
+  "--cov-fail-under=100",
+  "--cov-report=term-missing:skip-covered",
+  "--cov-report=xml",
+  "--cov=pyrig_webapp",
+  "--dist=worksteal",
+  "--numprocesses=auto",
+  "--report-chars=a",
+]
+filterwarnings = [
+  "error",
+]
+strict = true
+testpaths = [
+  "tests",
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+ignore = [
+  "CPY001",
+]
+select = [
+  "ALL",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+  "S101",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ryl.lint]
+strict = true
+
+[tool.ryl.lint.rules]
+ALL = "enable"
+key-ordering = "disable"
+yaml-directive = "disable"
+
+[tool.typos.default]
+extend-ignore-re = [
+  "(?m)^.*spellchecker:disable-line.*$",
+  "(?m)^.*spellchecker:disable-next-line.*\n.*",
+]
+locale = "en-us"
+
+[tool.vulture]
+paths = [
+  "src",
+  "vulture_whitelist.py",
+]
