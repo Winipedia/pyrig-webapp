@@ -223,6 +223,11 @@ __marimo__/
 .streamlit/secrets.toml
 
 # pyrig stuff
+*.db
+*.py[cod]
 .rumdl_cache/
 .ryl_cache/
+.states
+.web
+assets/external/
 .scratch.py

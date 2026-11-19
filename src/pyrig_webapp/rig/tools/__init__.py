@@ -1,1 +1,1 @@
-"""Customized rig tools package for the webapp plugin."""
+"""Customized rig tools package for this plugin."""

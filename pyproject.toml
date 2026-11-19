@@ -27,7 +27,8 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "pyrig>=19.38.2",
+  "pyrig>=19.40.0",
+  "pyrig-runtime>=3.27.93",
   "reflex>=0.11.0",
 ]
 
