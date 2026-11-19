@@ -442,6 +442,21 @@ groups = [
 ]
 priority = 13
 
+[[repos.hooks]]
+id = "compile-web-app"
+name = "compile web app"
+language = "system"
+entry = "uv run reflex compile"
+stages = [
+  "pre-push",
+]
+groups = [
+  "all",
+]
+always_run = true
+pass_filenames = false
+priority = 13
+
 [[repos]]
 repo = "builtin"
 

@@ -42,6 +42,7 @@
 [![RemoteVersionController](https://img.shields.io/github/stars/Winipedia/pyrig-webapp?style=social)](https://github.com/Winipedia/pyrig-webapp)
 [![VersionControlHookManager](https://raw.githubusercontent.com/j178/prek/master/docs/assets/badge.svg)](https://github.com/j178/prek)
 [![VersionController](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white)](https://git-scm.com)
+[![WebAppFramework](https://img.shields.io/badge/web--framework-reflex-1C1C1E)](https://github.com/reflex-dev/reflex)
 <!-- project-info -->
 [![DocsBuilder](https://img.shields.io/badge/Documentation-zensical-326CE5)](https://Winipedia.github.io/pyrig-webapp)
 [![PackageIndex](https://img.shields.io/pypi/v/pyrig-webapp?logo=pypi&logoColor=white)](https://pypi.org/project/pyrig-webapp)

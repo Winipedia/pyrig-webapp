@@ -3,9 +3,11 @@
 from pyrig.rig.configs.base.config_file import ConfigFile
 from pyrig.rig.configs.base.copy_module import CopyModuleConfigFile
 from pyrig.rig.configs.base.string_ import StringConfigFile
+from pyrig.rig.tools.base.hooks import VersionControlHookTool
+from pyrig.rig.tools.base.tool import Tool
 
-from pyrig_webapp.rig.configs.main import MainConfigFile
-from pyrig_webapp.rig.configs.web_app import WebAppConfigFile
+from pyrig_webapp.rig.configs.web_app.config import WebAppConfigConfigFile
+from pyrig_webapp.rig.configs.web_app.main import MainConfigFile
 
 _CONFIG_FILE_OVERRIDES = (
     ConfigFile.is_correct,
@@ -16,5 +18,13 @@ _CONFIG_FILE_OVERRIDES = (
 )
 _CONFIG_FILES = (
     MainConfigFile,
-    WebAppConfigFile,
+    WebAppConfigConfigFile,
+)
+_TOOL_OVERRIDES = (
+    Tool.dev_dependencies,
+    Tool.group,
+    Tool.image_url,
+    Tool.link_url,
+    Tool.runtime_dependencies,
+    VersionControlHookTool.hooks,
 )

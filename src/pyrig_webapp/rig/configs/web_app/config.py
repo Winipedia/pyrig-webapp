@@ -11,7 +11,7 @@ from pyrig_runtime.core.introspection.modules import replace_root_module_name
 from pyrig_webapp import main
 
 
-class WebAppConfigFile(PythonConfigFile):
+class WebAppConfigConfigFile(PythonConfigFile):
     """Create a Reflex configuration without overwriting user changes."""
 
     @override

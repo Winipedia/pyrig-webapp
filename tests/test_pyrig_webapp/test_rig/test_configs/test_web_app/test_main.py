@@ -1,7 +1,7 @@
 """Test module."""
 
 from pyrig_webapp import main
-from pyrig_webapp.rig.configs.main import MainConfigFile
+from pyrig_webapp.rig.configs.web_app.main import MainConfigFile
 
 
 class TestMainConfigFile:
