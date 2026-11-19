@@ -23,6 +23,15 @@ class Pyrigger(BasePyrigger):
         steps = list(super().setup_steps())
         index = steps.index(self.step_synchronize_project())
         steps.insert(index + 1, (Args(self.web_app_framework(), "compile"), {}))
+        # Temporary workaround until https://github.com/reflex-dev/reflex/pull/7935
+        # is merged and released, after remove the mixed-line-ending step.
+        steps.insert(
+            index + 2,
+            (
+                Args("prek", "run", "mixed-line-ending", "--files", ".gitignore"),
+                {"check": False},
+            ),
+        )
         return tuple(steps)
 
     def version_control_ignore_patterns(self) -> tuple[str, ...]:
