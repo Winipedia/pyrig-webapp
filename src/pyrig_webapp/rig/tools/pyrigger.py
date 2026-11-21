@@ -12,7 +12,7 @@ class Pyrigger(BasePyrigger):
     """Customized Pyrigger to integrate webapp functionality."""
 
     def setup_steps(self) -> tuple[tuple[Args, dict[str, Any]], ...]:
-        """Add web app framework compilation step after sync.
+        """Add web app compilation and line-ending normalization after sync.
 
         This creates the ``reflex.lock`` folder, which should be committed to version
         control.

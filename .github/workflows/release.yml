@@ -67,6 +67,7 @@
     "permissions":
       "contents": "read"
       "id-token": "write"  # required
+      "packages": "write"  # required
       "pages": "write"  # required
     "secrets":
       "REPO_TOKEN": "${{ secrets.REPO_TOKEN }}"

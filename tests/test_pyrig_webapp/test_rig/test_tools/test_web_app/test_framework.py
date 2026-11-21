@@ -13,6 +13,11 @@ class TestWebAppFramework:
     def test_compile_args(self) -> None:
         """Test the framework compile command."""
         assert WebAppFramework.I.compile_args() == Args("reflex", "compile")
+        assert WebAppFramework.I.compile_args("--backend-only") == Args(
+            "reflex",
+            "compile",
+            "--backend-only",
+        )
 
     def test_compile_web_app(self) -> None:
         """Test the project-environment compile command."""
@@ -59,6 +64,37 @@ class TestWebAppFramework:
     def test_name(self) -> None:
         """Test the framework CLI name."""
         assert WebAppFramework.I.name() == "reflex"
+
+    def test_package_manager_container_binary_copy_spec(self) -> None:
+        """Test method."""
+        assert WebAppFramework.I.package_manager_container_binary_copy_spec() == (
+            "docker.io/oven/bun:slim",
+            "/usr/local/bin/bun",
+            "/usr/local/bin/bun",
+        )
+
+    def test_run_args(self) -> None:
+        """Test method."""
+        assert WebAppFramework.I.run_args() == Args("reflex", "run")
+        assert WebAppFramework.I.run_args("--backend-only") == Args(
+            "reflex",
+            "run",
+            "--backend-only",
+        )
+
+    def test_run_production_args(self) -> None:
+        """Test method."""
+        assert WebAppFramework.I.run_production_args() == Args(
+            "reflex",
+            "run",
+            "--env=prod",
+        )
+        assert WebAppFramework.I.run_production_args("--backend-only") == Args(
+            "reflex",
+            "run",
+            "--env=prod",
+            "--backend-only",
+        )
 
     def test_runtime_dependencies(self) -> None:
         """Test the framework is declared as a runtime dependency."""

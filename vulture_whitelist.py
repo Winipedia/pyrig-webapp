@@ -5,6 +5,7 @@ from pyrig.rig.configs.base.copy_module import CopyModuleConfigFile
 from pyrig.rig.configs.base.string_ import StringConfigFile
 from pyrig.rig.tools.base.hooks import VersionControlHookTool
 from pyrig.rig.tools.base.tool import Tool
+from pyrig_containers.rig.configs.containers.file import ContainerfileConfigFile
 
 from pyrig_webapp.rig.configs.web_app.config import WebAppConfigConfigFile
 from pyrig_webapp.rig.configs.web_app.main import MainConfigFile
@@ -13,6 +14,7 @@ _CONFIG_FILE_OVERRIDES = (
     ConfigFile.is_correct,
     ConfigFile.parent_path,
     ConfigFile.stem,
+    ContainerfileConfigFile.project_command,
     CopyModuleConfigFile.copy_module,
     StringConfigFile.content,
 )

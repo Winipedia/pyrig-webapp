@@ -37,6 +37,7 @@
 [![XMLLinter](https://img.shields.io/badge/XML-check--xml-blue)](https://prek.j178.dev/reference/built-in-hooks/#check-xml)
 [![YAMLLinter](https://img.shields.io/badge/YAML-ryl-red)](https://github.com/owenlamont/ryl)
 <!-- tooling -->
+[![ContainerEngine](https://img.shields.io/badge/Container-Podman-A23CD6?logo=podman&logoColor=grey&colorA=0D1F3F&colorB=A23CD6)](https://github.com/podman-container-tools/podman)
 [![PackageManager](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![Pyrigger](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Winipedia/pyrig/main/docs/assets/badge.json)](https://github.com/Winipedia/pyrig)
 [![RemoteVersionController](https://img.shields.io/github/stars/Winipedia/pyrig-webapp?style=social)](https://github.com/Winipedia/pyrig-webapp)
@@ -44,6 +45,7 @@
 [![VersionController](https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white)](https://git-scm.com)
 [![WebAppFramework](https://img.shields.io/badge/web--framework-reflex-1C1C1E)](https://github.com/reflex-dev/reflex)
 <!-- project-info -->
+[![ContainerRegistry](https://img.shields.io/badge/GHCR-Container_Image-black?logo=github&logoColor=white)](https://github.com/Winipedia/pyrig-webapp/pkgs/container/pyrig-webapp)
 [![DocsBuilder](https://img.shields.io/badge/Documentation-zensical-326CE5)](https://Winipedia.github.io/pyrig-webapp)
 [![PackageIndex](https://img.shields.io/pypi/v/pyrig-webapp?logo=pypi&logoColor=white)](https://pypi.org/project/pyrig-webapp)
 [![ProgrammingLanguage](https://img.shields.io/pypi/pyversions/pyrig-webapp)](https://www.python.org)

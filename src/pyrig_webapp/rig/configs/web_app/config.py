@@ -12,7 +12,7 @@ from pyrig_webapp import main
 
 
 class WebAppConfigConfigFile(PythonConfigFile):
-    """Create a Reflex configuration without overwriting user changes."""
+    """Manage a Reflex configuration for the target project."""
 
     @override
     def content(self) -> str:

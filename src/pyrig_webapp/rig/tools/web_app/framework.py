@@ -66,6 +66,14 @@ class WebAppFramework(VersionControlHookTool):
         """Return the framework CLI name."""
         return snake_to_kebab_case(rx.__name__)
 
+    def package_manager_container_binary_copy_spec(self) -> tuple[str, str, str]:
+        """Return the Bun image and paths used to copy its binary into a container."""
+        return ("docker.io/oven/bun:slim", "/usr/local/bin/bun", "/usr/local/bin/bun")
+
+    def run_production_args(self, *args: str) -> Args:
+        """Return arguments to run the web application in production."""
+        return self.run_args("--env=prod", *args)
+
     def compile_web_app_hook(self) -> dict[str, Any]:
         """Return the framework compile hook, ordered after dependency checks."""
         return VersionControlHookManager.I.local_hook(
@@ -78,10 +86,14 @@ class WebAppFramework(VersionControlHookTool):
             always_run=True,
         )
 
+    def run_args(self, *args: str) -> Args:
+        """Return arguments to run the web application."""
+        return self.args("run", *args)
+
     def compile_web_app(self) -> Args:
         """Return the command compiling the app within the project environment."""
         return PackageManager.I.run_args(*self.compile_args())
 
-    def compile_args(self) -> Args:
+    def compile_args(self, *args: str) -> Args:
         """Return arguments to compile the web application."""
-        return self.args("compile")
+        return self.args("compile", *args)
