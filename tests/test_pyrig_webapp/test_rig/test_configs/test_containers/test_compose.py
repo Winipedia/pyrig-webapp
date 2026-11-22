@@ -6,18 +6,6 @@ from pyrig_webapp.rig.configs.containers.compose import ComposeConfigFile
 class TestComposeConfigFile:
     """Test class."""
 
-    def test__configs(self) -> None:
-        """Test method."""
-        assert ComposeConfigFile.I.configs() == {
-            "services": {
-                "app": {
-                    "build": {},
-                    "ports": ["127.0.0.1:3000:3000"],
-                },
-            },
-        }
-        assert ComposeConfigFile.I.load() == ComposeConfigFile.I.configs()
-
     def test_app_ports(self) -> None:
         """Test method."""
         assert ComposeConfigFile.I.app_ports() == ["127.0.0.1:3000:3000"]
@@ -30,3 +18,10 @@ class TestComposeConfigFile:
     def test_loopback_ip(self) -> None:
         """Test method."""
         assert ComposeConfigFile.I.loopback_ip() == "127.0.0.1"
+
+    def test_service_app_before(self) -> None:
+        """Test method."""
+        assert ComposeConfigFile.I.service_app_before() == {
+            "build": {},
+            "ports": ["127.0.0.1:3000:3000"],
+        }

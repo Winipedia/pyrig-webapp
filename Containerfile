@@ -6,6 +6,8 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 COPY LICENSE README.md pyproject.toml rxconfig.py uv.lock ./
 COPY src/pyrig_webapp src/pyrig_webapp
 
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
+
 RUN uv sync --no-group=dev
 
 RUN useradd --create-home --uid=1000 appuser \

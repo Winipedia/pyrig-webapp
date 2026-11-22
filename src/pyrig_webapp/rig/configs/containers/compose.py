@@ -11,13 +11,11 @@ from reflex.constants import DefaultPorts
 class ComposeConfigFile(BaseComposeConfigFile):
     """Configure the web application service and its local port mapping."""
 
-    def _configs(self) -> dict[str, Any]:
-        """Add the web application port mapping to the base service configuration."""
-        configs = super()._configs()
-        services = configs["services"]
-        app = services["app"]
-        app["ports"] = self.app_ports()
-        return configs
+    def service_app_before(self) -> dict[str, Any]:
+        """Add extra service keys before the defaults."""
+        before = super().service_app_before()
+        before["ports"] = self.app_ports()
+        return before
 
     def app_ports(self) -> list[str]:
         """Return the loopback port mapping for the Reflex frontend."""
