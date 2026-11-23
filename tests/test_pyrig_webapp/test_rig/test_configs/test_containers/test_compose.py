@@ -33,17 +33,32 @@ class TestComposeConfigFile:
         """Test method."""
         assert ComposeConfigFile.I.loopback_ip() == "127.0.0.1"
 
-    def test_service_app_before(self) -> None:
+    def test_service(self) -> None:
         """Test method."""
-        assert ComposeConfigFile.I.service_app_before() == {
+        compose = ComposeConfigFile.I
+        assert compose.service(
+            compose.service_app,
+            environment={"MODE": "production"},
+        ) == {
+            "service_name": "app",
+            "environment": {"MODE": "production"},
+            "restart": "unless-stopped",
+            "cap_drop": ["ALL"],
+            "security_opt": ["no-new-privileges:true"],
+        }
+        assert (
+            compose.service(
+                compose.service_app,
+                restart="always",
+            )["restart"]
+            == "always"
+        )
+
+    def test_service_app_settings(self) -> None:
+        """Test method."""
+        compose = ComposeConfigFile.I
+        assert compose.service_app_settings() == {
             "build": {},
             "ports": ["127.0.0.1:3000:3000"],
-            "restart": "unless-stopped",
-            "healthcheck": ComposeConfigFile.I.app_healthcheck(),
+            "healthcheck": compose.app_healthcheck(),
         }
-        assert list(ComposeConfigFile.I.service_app_before()) == [
-            "build",
-            "ports",
-            "restart",
-            "healthcheck",
-        ]
