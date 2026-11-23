@@ -6,6 +6,20 @@ from pyrig_webapp.rig.configs.containers.compose import ComposeConfigFile
 class TestComposeConfigFile:
     """Test class."""
 
+    def test_app_healthcheck(self) -> None:
+        """Test method."""
+        assert ComposeConfigFile.I.app_healthcheck() == {
+            "test": [
+                "CMD",
+                "python",
+                "-c",
+                (
+                    "from urllib.request import urlopen\n"
+                    "urlopen('http://127.0.0.1:3000/ping')"
+                ),
+            ],
+        }
+
     def test_app_ports(self) -> None:
         """Test method."""
         assert ComposeConfigFile.I.app_ports() == ["127.0.0.1:3000:3000"]
@@ -24,4 +38,12 @@ class TestComposeConfigFile:
         assert ComposeConfigFile.I.service_app_before() == {
             "build": {},
             "ports": ["127.0.0.1:3000:3000"],
+            "restart": "unless-stopped",
+            "healthcheck": ComposeConfigFile.I.app_healthcheck(),
         }
+        assert list(ComposeConfigFile.I.service_app_before()) == [
+            "build",
+            "ports",
+            "restart",
+            "healthcheck",
+        ]

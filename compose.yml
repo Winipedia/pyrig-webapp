@@ -5,6 +5,15 @@
     "build": {}
     "ports":
       - "127.0.0.1:3000:3000"
+    "restart": "unless-stopped"
+    "healthcheck":
+      "test":
+        - "CMD"
+        - "python"
+        - "-c"
+        - |-
+          from urllib.request import urlopen
+          urlopen('http://127.0.0.1:3000/ping')
     "cap_drop":
       - "ALL"
     "security_opt":
