@@ -3,8 +3,6 @@
 "services":
   "app":
     "build": {}
-    "ports":
-      - "127.0.0.1:3000:3000"
     "restart": "unless-stopped"
     "healthcheck":
       "test":
@@ -13,9 +11,39 @@
         - "-c"
         - |-
           from urllib.request import urlopen
-          urlopen('http://127.0.0.1:3000/ping')
+          urlopen('http://localhost:3000/ping')
     "cap_drop":
       - "ALL"
     "security_opt":
       - "no-new-privileges:true"
+  "web-server":
+    "image": "docker.io/library/caddy:latest"
+    "pull_policy": "always"
+    "environment":
+      "SITE_ADDRESS": "${SITE_ADDRESS:-localhost}"
+    "ports":
+      - "8080:80"
+      - "8843:443"
+      - "8843:443/udp"
+    "volumes":
+      - "./caddy:/etc/caddy:ro"
+      - "web-server-data:/data"
+    "depends_on":
+      "app":
+        "condition": "service_healthy"
+    "restart": "unless-stopped"
+    "healthcheck":
+      "test":
+        - "CMD"
+        - "curl"
+        - "--fail"
+        - "http://localhost:2019/config/"
+    "cap_drop":
+      - "ALL"
+    "cap_add":
+      - "NET_BIND_SERVICE"
+    "security_opt":
+      - "no-new-privileges:true"
+"volumes":
+  "web-server-data": {}
 ...

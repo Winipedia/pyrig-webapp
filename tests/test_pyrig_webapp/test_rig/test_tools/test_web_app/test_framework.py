@@ -42,6 +42,11 @@ class TestWebAppFramework:
         """Test the framework does not add a dev dependency."""
         assert WebAppFramework.I.dev_dependencies() == ()
 
+    def test_frontend_port(self) -> None:
+        """Test method."""
+        expected = 3000
+        assert WebAppFramework.I.frontend_port() == expected
+
     def test_group(self) -> None:
         """Test the framework badge group."""
         assert WebAppFramework.I.group() == Group.TOOLING
@@ -54,7 +59,7 @@ class TestWebAppFramework:
         """Test the framework badge image URL."""
         assert (
             WebAppFramework.I.image_url()
-            == "https://img.shields.io/badge/web--framework-reflex-1C1C1E"
+            == "https://img.shields.io/badge/reflex-1C1C1E?logo=reflex&logoColor=white"
         )
 
     def test_link_url(self) -> None:

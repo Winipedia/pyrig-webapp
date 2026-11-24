@@ -1,6 +1,6 @@
 """Tool wrapper for the pyrig CLI itself, including new-project initialization."""
 
-from typing import Any
+from typing import Any, override
 
 from pyrig.core.subprocesses import Args
 from pyrig.rig.tools.pyrigger import Pyrigger as BasePyrigger
@@ -11,6 +11,7 @@ from pyrig_webapp.rig.tools.web_app.framework import WebAppFramework
 class Pyrigger(BasePyrigger):
     """Customized Pyrigger to integrate webapp functionality."""
 
+    @override
     def setup_steps(self) -> tuple[tuple[Args, dict[str, Any]], ...]:
         """Add web app compilation and line-ending normalization after sync.
 

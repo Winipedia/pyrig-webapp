@@ -6,6 +6,14 @@ from pyrig_webapp.rig.configs.containers.compose import ComposeConfigFile
 class TestComposeConfigFile:
     """Test class."""
 
+    def test__configs(self) -> None:
+        """Test method."""
+        assert ComposeConfigFile.I._configs() == {  # noqa: SLF001
+            "name": ComposeConfigFile.I.name(),
+            "services": ComposeConfigFile.I.services_configs(),
+            "volumes": {"web-server-data": {}},
+        }
+
     def test_app_healthcheck(self) -> None:
         """Test method."""
         assert ComposeConfigFile.I.app_healthcheck() == {
@@ -15,29 +23,23 @@ class TestComposeConfigFile:
                 "-c",
                 (
                     "from urllib.request import urlopen\n"
-                    "urlopen('http://127.0.0.1:3000/ping')"
+                    "urlopen('http://localhost:3000/ping')"
                 ),
             ],
         }
 
-    def test_app_ports(self) -> None:
+    def test_configs(self) -> None:
         """Test method."""
-        assert ComposeConfigFile.I.app_ports() == ["127.0.0.1:3000:3000"]
-
-    def test_frontend_port(self) -> None:
-        """Test method."""
-        expected_port = 3000
-        assert ComposeConfigFile.I.frontend_port() == expected_port
-
-    def test_loopback_ip(self) -> None:
-        """Test method."""
-        assert ComposeConfigFile.I.loopback_ip() == "127.0.0.1"
+        assert ComposeConfigFile.I.configs() == {
+            "name": ComposeConfigFile.I.name(),
+            "services": ComposeConfigFile.I.services_configs(),
+            "volumes": {"web-server-data": {}},
+        }
 
     def test_service(self) -> None:
         """Test method."""
-        compose = ComposeConfigFile.I
-        assert compose.service(
-            compose.service_app,
+        assert ComposeConfigFile.I.service(
+            ComposeConfigFile.I.service_app,
             environment={"MODE": "production"},
         ) == {
             "service_name": "app",
@@ -47,8 +49,8 @@ class TestComposeConfigFile:
             "security_opt": ["no-new-privileges:true"],
         }
         assert (
-            compose.service(
-                compose.service_app,
+            ComposeConfigFile.I.service(
+                ComposeConfigFile.I.service_app,
                 restart="always",
             )["restart"]
             == "always"
@@ -56,9 +58,56 @@ class TestComposeConfigFile:
 
     def test_service_app_settings(self) -> None:
         """Test method."""
-        compose = ComposeConfigFile.I
-        assert compose.service_app_settings() == {
+        assert ComposeConfigFile.I.service_app_settings() == {
             "build": {},
-            "ports": ["127.0.0.1:3000:3000"],
-            "healthcheck": compose.app_healthcheck(),
+            "healthcheck": ComposeConfigFile.I.app_healthcheck(),
+        }
+
+    def test_service_web_server(self) -> None:
+        """Test method."""
+        assert ComposeConfigFile.I.service_web_server() == {
+            "service_name": "web-server",
+            "image": "docker.io/library/caddy:latest",
+            "environment": {
+                "SITE_ADDRESS": "${SITE_ADDRESS:-localhost}",
+            },
+            "ports": ["8080:80", "8843:443", "8843:443/udp"],
+            "volumes": ["./caddy:/etc/caddy:ro", "web-server-data:/data"],
+            "depends_on": {"app": {"condition": "service_healthy"}},
+            "restart": "unless-stopped",
+            "healthcheck": ComposeConfigFile.I.web_server_healthcheck(),
+            "cap_drop": ["ALL"],
+            "cap_add": ["NET_BIND_SERVICE"],
+            "security_opt": ["no-new-privileges:true"],
+            "pull_policy": "always",
+        }
+
+    def test_service_web_server_settings(self) -> None:
+        """Test method."""
+        assert ComposeConfigFile.I.service_web_server_settings() == {
+            "image": "docker.io/library/caddy:latest",
+            "pull_policy": "always",
+            "environment": {"SITE_ADDRESS": "${SITE_ADDRESS:-localhost}"},
+            "ports": ["8080:80", "8843:443", "8843:443/udp"],
+            "volumes": ["./caddy:/etc/caddy:ro", "web-server-data:/data"],
+            "depends_on": {"app": {"condition": "service_healthy"}},
+            "healthcheck": ComposeConfigFile.I.web_server_healthcheck(),
+            "cap_add": ["NET_BIND_SERVICE"],
+        }
+
+    def test_services(self) -> None:
+        """Test method."""
+        assert ComposeConfigFile.I.services() == (
+            ComposeConfigFile.I.service_app,
+            ComposeConfigFile.I.service_web_server,
+        )
+
+    def test_web_server_data_volume(self) -> None:
+        """Test method."""
+        assert ComposeConfigFile.I.web_server_data_volume() == "web-server-data"
+
+    def test_web_server_healthcheck(self) -> None:
+        """Test method."""
+        assert ComposeConfigFile.I.web_server_healthcheck() == {
+            "test": ["CMD", "curl", "--fail", "http://localhost:2019/config/"],
         }

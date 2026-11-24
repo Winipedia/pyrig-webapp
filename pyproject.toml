@@ -1,6 +1,6 @@
 [project]
 name = "pyrig-webapp"
-version = "0.6.0"
+version = "0.7.1"
 description = "A pyrig plugin to build web applications."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -28,7 +28,7 @@ classifiers = [
 ]
 dependencies = [
   "pyrig>=19.41.0",
-  "pyrig-containers>=4.8.0",
+  "pyrig-containers>=4.9.0",
   "pyrig-runtime>=3.27.93",
   "reflex>=0.11.0",
 ]
@@ -135,6 +135,9 @@ strict = true
 ALL = "enable"
 key-ordering = "disable"
 yaml-directive = "disable"
+
+[tool.ty.rules]
+all = "error"
 
 [tool.typos.default]
 extend-ignore-re = [

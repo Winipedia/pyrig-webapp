@@ -11,7 +11,7 @@ from pyrig_runtime.core.introspection.modules import replace_root_module_name
 from pyrig_webapp import main
 
 
-class WebAppConfigConfigFile(PythonConfigFile):
+class WebAppConfigFile(PythonConfigFile):
     """Manage a Reflex configuration for the target project."""
 
     @override

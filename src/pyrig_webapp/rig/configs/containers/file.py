@@ -8,7 +8,7 @@ from pyrig_containers.rig.configs.containers.file import (
     ContainerfileConfigFile as BaseContainerfileConfigFile,
 )
 
-from pyrig_webapp.rig.configs.web_app.config import WebAppConfigConfigFile
+from pyrig_webapp.rig.configs.web_app.config import WebAppConfigFile
 from pyrig_webapp.rig.tools.web_app.framework import WebAppFramework
 
 
@@ -31,4 +31,4 @@ class ContainerfileConfigFile(BaseContainerfileConfigFile):
     @override
     def required_files(self) -> tuple[Path, ...]:
         """Include the Reflex configuration alongside the base required files."""
-        return (*super().required_files(), WebAppConfigConfigFile.I.path())
+        return (*super().required_files(), WebAppConfigFile.I.path())

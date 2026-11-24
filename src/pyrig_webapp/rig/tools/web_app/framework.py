@@ -12,6 +12,7 @@ from pyrig.rig.tools.version_control.hooks.manager import (
     VersionControlHookManager,
 )
 from pyrig_runtime.core.strings import snake_to_kebab_case
+from reflex.constants import DefaultPorts
 
 
 class WebAppFramework(VersionControlHookTool):
@@ -35,9 +36,7 @@ class WebAppFramework(VersionControlHookTool):
     @override
     def image_url(self) -> str:
         """Return the web framework badge image URL."""
-        return (
-            f"https://img.shields.io/badge/web--framework-{self.shield_name()}-1C1C1E"
-        )
+        return f"https://img.shields.io/badge/{self.shield_name()}-1C1C1E?logo=reflex&logoColor=white"
 
     @override
     def link_url(self) -> str:
@@ -65,6 +64,10 @@ class WebAppFramework(VersionControlHookTool):
     def name(self) -> str:
         """Return the framework CLI name."""
         return snake_to_kebab_case(rx.__name__)
+
+    def frontend_port(self) -> int:
+        """Return the default frontend port for the application service."""
+        return DefaultPorts.FRONTEND_PORT
 
     def package_manager_container_binary_copy_spec(self) -> tuple[str, str, str]:
         """Return the Bun image and paths used to copy its binary into a container."""

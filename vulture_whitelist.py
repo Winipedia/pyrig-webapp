@@ -7,10 +7,13 @@ from pyrig.rig.tools.base.hooks import VersionControlHookTool
 from pyrig.rig.tools.base.tool import Tool
 from pyrig_containers.rig.configs.containers.file import ContainerfileConfigFile
 
-from pyrig_webapp.rig.configs.web_app.config import WebAppConfigConfigFile
+from pyrig_webapp.rig.configs.web_app.config import WebAppConfigFile
 from pyrig_webapp.rig.configs.web_app.main import MainConfigFile
+from pyrig_webapp.rig.configs.web_app.server import WebServerConfigFile
 
 _CONFIG_FILE_OVERRIDES = (
+    ConfigFile.extension,
+    ConfigFile.extension_separator,
     ConfigFile.is_correct,
     ConfigFile.parent_path,
     ConfigFile.stem,
@@ -20,7 +23,8 @@ _CONFIG_FILE_OVERRIDES = (
 )
 _CONFIG_FILES = (
     MainConfigFile,
-    WebAppConfigConfigFile,
+    WebAppConfigFile,
+    WebServerConfigFile,
 )
 _TOOL_OVERRIDES = (
     Tool.dev_dependencies,
