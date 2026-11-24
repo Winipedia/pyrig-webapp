@@ -60,7 +60,7 @@ class WebServer(Tool):
 
     def https_host_port(self) -> int:
         """Return the host port published for HTTPS and HTTP/3."""
-        return 8843
+        return 8443
 
     def site_address_env_var(self) -> str:
         """Return the environment variable used for the Caddy site address."""

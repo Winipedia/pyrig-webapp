@@ -71,7 +71,7 @@ class TestComposeConfigFile:
             "environment": {
                 "SITE_ADDRESS": "${SITE_ADDRESS:-localhost}",
             },
-            "ports": ["8080:80", "8843:443", "8843:443/udp"],
+            "ports": ["8080:80", "8443:443", "8443:443/udp"],
             "volumes": ["./caddy:/etc/caddy:ro", "web-server-data:/data"],
             "depends_on": {"app": {"condition": "service_healthy"}},
             "restart": "unless-stopped",
@@ -88,7 +88,7 @@ class TestComposeConfigFile:
             "image": "docker.io/library/caddy:latest",
             "pull_policy": "always",
             "environment": {"SITE_ADDRESS": "${SITE_ADDRESS:-localhost}"},
-            "ports": ["8080:80", "8843:443", "8843:443/udp"],
+            "ports": ["8080:80", "8443:443", "8443:443/udp"],
             "volumes": ["./caddy:/etc/caddy:ro", "web-server-data:/data"],
             "depends_on": {"app": {"condition": "service_healthy"}},
             "healthcheck": ComposeConfigFile.I.web_server_healthcheck(),

@@ -23,8 +23,8 @@
       "SITE_ADDRESS": "${SITE_ADDRESS:-localhost}"
     "ports":
       - "8080:80"
-      - "8843:443"
-      - "8843:443/udp"
+      - "8443:443"
+      - "8443:443/udp"
     "volumes":
       - "./caddy:/etc/caddy:ro"
       - "web-server-data:/data"

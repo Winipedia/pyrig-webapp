@@ -47,7 +47,7 @@ class TestWebServer:
 
     def test_https_host_port(self) -> None:
         """Test method."""
-        expected = 8843
+        expected = 8443
         assert WebServer.I.https_host_port() == expected
 
     def test_image_url(self) -> None:
