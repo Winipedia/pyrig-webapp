@@ -48,20 +48,32 @@ class WebServer(Tool):
 
     def http_container_port(self) -> int:
         """Return Caddy's default HTTP port inside the container."""
-        return 80
+        return self.http_port()
 
     def http_host_port(self) -> int:
         """Return the host port published for HTTP."""
-        return 8080
+        return self.offset_port(self.http_port())
 
     def https_container_port(self) -> int:
         """Return Caddy's default HTTPS and HTTP/3 port inside the container."""
-        return 443
+        return self.https_port()
 
     def https_host_port(self) -> int:
         """Return the host port published for HTTPS and HTTP/3."""
-        return 8443
+        return self.offset_port(self.https_port())
 
     def site_address_env_var(self) -> str:
         """Return the environment variable used for the Caddy site address."""
         return "SITE_ADDRESS"
+
+    def http_port(self) -> int:
+        """Return the standard public HTTP port."""
+        return 80
+
+    def https_port(self) -> int:
+        """Return the standard public HTTPS and HTTP/3 port."""
+        return 443
+
+    def offset_port(self, port: int) -> int:
+        """Return the host port offset by 8000."""
+        return port + 8000

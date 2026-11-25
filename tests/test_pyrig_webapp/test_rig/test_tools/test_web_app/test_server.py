@@ -40,6 +40,11 @@ class TestWebServer:
         expected = 8080
         assert WebServer.I.http_host_port() == expected
 
+    def test_http_port(self) -> None:
+        """Test method."""
+        expected = 80
+        assert WebServer.I.http_port() == expected
+
     def test_https_container_port(self) -> None:
         """Test method."""
         expected = 443
@@ -49,6 +54,11 @@ class TestWebServer:
         """Test method."""
         expected = 8443
         assert WebServer.I.https_host_port() == expected
+
+    def test_https_port(self) -> None:
+        """Test method."""
+        expected = 443
+        assert WebServer.I.https_port() == expected
 
     def test_image_url(self) -> None:
         """Test method."""
@@ -64,6 +74,13 @@ class TestWebServer:
     def test_name(self) -> None:
         """Test method."""
         assert WebServer.I.name() == "caddy"
+
+    def test_offset_port(self) -> None:
+        """Test method."""
+        expected = 8080
+        assert WebServer.I.offset_port(80) == expected
+        expected = 8443
+        assert WebServer.I.offset_port(443) == expected
 
     def test_site_address_env_var(self) -> None:
         """Test method."""
