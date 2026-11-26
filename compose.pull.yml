@@ -1,0 +1,6 @@
+---
+"services":
+  "app":
+    "image": "ghcr.io/winipedia/pyrig-webapp:latest"
+    "pull_policy": "always"
+...

@@ -16,7 +16,7 @@ class WebServerConfigFile(StringConfigFile):
     @override
     def content(self) -> str:
         """Return the reverse proxy configuration for the configured site."""
-        app_name = ComposeConfigFile.I.service_name(ComposeConfigFile.I.service_app)
+        app_name = ComposeConfigFile.I.service_app_name()
         return f"""{{${WebServer.I.site_address_env_var()}}} {{
 	reverse_proxy {app_name}:{WebAppFramework.I.frontend_port()}
 }}

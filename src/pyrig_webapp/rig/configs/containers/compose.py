@@ -110,7 +110,7 @@ class ComposeConfigFile(BaseComposeConfigFile):
                 f"{self.web_server_data_volume()}:/data",
             ],
             "depends_on": {
-                self.service_name(self.service_app): {
+                self.service_app_name(): {
                     "condition": "service_healthy",
                 },
             },
