@@ -1,6 +1,6 @@
 [project]
 name = "pyrig-webapp"
-version = "0.11.1"
+version = "0.12.0"
 description = "A pyrig plugin to build web applications."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -28,7 +28,7 @@ classifiers = [
 ]
 dependencies = [
   "pyrig>=19.41.0",
-  "pyrig-containers>=4.11.0",
+  "pyrig-containers>=4.12.0",
   "pyrig-runtime>=3.27.93",
   "reflex>=0.11.0",
 ]
@@ -52,6 +52,7 @@ dev = [
   "hypofuzz>=25.11.1",
   "hypothesis>=6.170.15",
   "mkdocstrings[python]>=1.0.8",
+  "podman-compose>=1.6.0",
   "pre-commit-hooks>=6.0.0",
   "prek>=0.5.11",
   "pyflakes>=4.1.0",
