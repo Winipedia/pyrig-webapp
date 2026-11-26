@@ -57,3 +57,58 @@
 > A pyrig plugin to build web applications.
 
 ---
+
+## Overview
+
+pyrig-webapp is a [pyrig](https://github.com/Winipedia/pyrig) plugin that
+scaffolds a [Reflex](https://github.com/reflex-dev/reflex) web application and
+packages it with a [Caddy](https://github.com/caddyserver/caddy) reverse proxy
+for local or production use.
+
+## Requirements
+
+In addition to pyrig's requirements, you will also need the requirements for
+[pyrig-containers](https://github.com/Winipedia/pyrig-containers).
+For local composing port forwarding from ports 80/443 to 8080/8443 is required,
+you may use the `forward-ports.sh` script to set it up.
+You may need to trust Caddy's local certificate authority in your browser or
+operating system for local HTTPS to work without warnings.
+
+## What it adds
+
+- **Reflex application** — a starter app module and `rxconfig.py` are generated
+  for the project. The default page displays “Hello, World!” and can be
+  customized in the generated app module.
+- **Framework tooling** — Reflex is added as a runtime dependency, its generated
+  files are ignored by version control, and pyrig compiles the app after project
+  synchronization and in a pre-push hook.
+- **Caddy configuration** — a `caddy/Caddyfile` reverse-proxies requests to the
+  Reflex application. `SITE_ADDRESS` configures the site address; it defaults
+  to `localhost`.
+- **Container configuration** — the container and Compose configuration runs the
+  app alongside Caddy, with health checks, persistent Caddy data, and HTTP,
+  HTTPS, and HTTP/3 ports published on higher host ports 8080 and 8443.
+  to GHCR on release.
+- **Port forwarding** — `forward-ports.sh` sets up permanent forwarding from
+  ports 80/443 to the Compose-published ports 8080/8443.
+
+## Usage
+
+```bash
+uv add pyrig-webapp --dev
+uv run pyrig sync
+sudo bash forward-ports.sh
+```
+
+After synchronization, edit the generated app module to build your application.
+Start the application and proxy together from the project root:
+
+```bash
+bash compose-up.sh build
+# or to use the published image
+bash compose-up.sh pull
+```
+
+## Documentation
+
+Full documentation is available on the [documentation site](https://Winipedia.github.io/pyrig-webapp).

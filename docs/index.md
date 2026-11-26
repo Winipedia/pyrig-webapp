@@ -57,3 +57,103 @@
 > A pyrig plugin to build web applications.
 
 ---
+
+## Overview
+
+pyrig-webapp integrates a Reflex application and Caddy reverse proxy into a
+pyrig-managed project. It scaffolds the app and framework configuration,
+extends pyrig-containers with an app-and-proxy Compose setup.
+
+## Requirements
+
+In addition to pyrig's requirements, you will also need the requirements for
+[pyrig-containers](https://github.com/Winipedia/pyrig-containers).
+
+Because Podman runs rootless, the Compose services publish HTTP on host port
+8080 and HTTPS/HTTP/3 on host port 8443 rather than using privileged ports 80
+and 443. Set up port forwarding on every machine that runs the Compose services:
+your local machine when developing locally, and the deployed server. On each
+Linux host with nftables and systemd you can run `sudo bash forward-ports.sh`
+from the project root to set up permanent port forwarding.
+
+When accessing the local site via `https://localhost`, Caddy's automatically
+issued local certificate may not be trusted by your browser. Either configure
+your browser or operating system to trust Caddy's local CA, or proceed through
+the browser's certificate warning each time.
+
+## Usage
+
+To add the plugin to your project, run:
+
+```bash
+uv add pyrig-webapp --dev
+uv run pyrig sync
+sudo bash forward-ports.sh
+```
+
+Start the app and reverse proxy from the project root:
+
+```bash
+bash compose-up.sh build
+# or to use the published image
+bash compose-up.sh pull
+```
+
+## Components
+
+### Reflex application and configuration
+
+`MainConfigFile` scaffolds the project's app module from the plugin's starter
+module, and `WebAppConfigFile` generates `rxconfig.py` with the project's
+package name and app import path. The starter page displays “Hello, World!”;
+edit the generated app module to implement the actual application.
+
+`WebAppFramework` integrates the Reflex CLI as a runtime dependency, contributes
+the framework badge, and adds Reflex-generated paths to the version-control
+ignore list. Pyrig compiles the app as part of synchronization. The generated
+pre-push hook also compiles it after the Python formatting hook. To compile
+manually, run `uv run reflex compile` from the project root.
+
+### Container image
+
+The plugin extends pyrig-containers' `Containerfile` to run the Reflex app in
+production mode and copy the Bun binary into the image for frontend
+dependencies. The app service has a health check against Reflex's ping
+endpoint. Container publishing uses the inherited pyrig-containers workflow.
+
+### Compose services
+
+`ComposeConfigFile` extends the base Compose configuration with an app service
+and a Caddy `web-server` service. Both restart unless stopped and drop Linux
+capabilities by default; Caddy is granted `NET_BIND_SERVICE`. Caddy waits until
+the app health check passes before starting.
+
+The web-server service uses the official Caddy image, mounts `caddy/Caddyfile`
+read-only, and stores Caddy data in the persistent `web-server-data` volume.
+It publishes container ports 80 and 443 on host ports 8080 and 8443,
+respectively, including UDP port 8443 for HTTP/3. The Caddy configuration
+reverse-proxies to the app's Reflex frontend port.
+
+### Site address and HTTPS
+
+Set `SITE_ADDRESS` to the hostname Caddy should serve. If it is unset, Compose
+uses `localhost`, which is suitable for local development. For automatic public
+HTTPS, use a domain that resolves to the host and ensure Caddy can reach the
+necessary external services and accept inbound traffic on ports 80 and 443.
+Because Compose maps those container ports to 8080 and 8443, `forward-ports.sh`
+can install nftables redirects and a systemd service on Linux hosts using
+nftables and systemd.
+
+### Port-forwarding script
+
+`ForwardPortsConfigFile` generates `forward-ports.sh`. Running it with
+administrative privileges writes nftables rules under `/etc/nftables.d`,
+creates a systemd oneshot service, and uses `systemctl` to enable and start it.
+The rules redirect TCP port 80 to 8080 and TCP/UDP port 443 to 8443. This is
+optional; the Compose-published ports can be used directly when standard ports
+are not needed.
+
+## API Reference
+
+For class- and method-level details, see the [API](api.md) Reference, which is
+generated automatically from the source.
