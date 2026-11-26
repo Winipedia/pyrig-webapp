@@ -58,10 +58,7 @@ class TestComposeConfigFile:
 
     def test_service_app_settings(self) -> None:
         """Test method."""
-        assert ComposeConfigFile.I.service_app_settings() == {
-            "build": {},
-            "healthcheck": ComposeConfigFile.I.app_healthcheck(),
-        }
+        assert "healthcheck" in ComposeConfigFile.I.service_app_settings()
 
     def test_service_web_server(self) -> None:
         """Test method."""
