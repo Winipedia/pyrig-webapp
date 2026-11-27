@@ -1,6 +1,5 @@
 """Generate the web app host port forwarding setup script."""
 
-from pathlib import Path
 from typing import override
 
 from pyrig.rig.configs.base.shell import ShellConfigFile
@@ -11,11 +10,6 @@ from pyrig_webapp.rig.tools.web_app.server import WebServer
 
 class ForwardPortsConfigFile(ShellConfigFile):
     """Generate a script that persistently forwards the host web ports."""
-
-    @override
-    def parent_path(self) -> Path:
-        """Return the project root."""
-        return Path()
 
     @override
     def script(self) -> str:

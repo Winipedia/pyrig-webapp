@@ -1,16 +1,10 @@
 """Test module."""
 
-from pathlib import Path
-
 from pyrig_webapp.rig.configs.web_app.forward_ports import ForwardPortsConfigFile
 
 
 class TestForwardPortsConfigFile:
     """Test class."""
-
-    def test_parent_path(self) -> None:
-        """Test method."""
-        assert ForwardPortsConfigFile.I.parent_path() == Path()
 
     def test_redirect_chain_name(self) -> None:
         """Test method."""
@@ -46,6 +40,7 @@ class TestForwardPortsConfigFile:
     def test_stem(self) -> None:
         """Test method."""
         assert ForwardPortsConfigFile.I.stem() == "forward-ports"
+        assert ForwardPortsConfigFile.I.path().as_posix() == "scripts/forward-ports.sh"
 
     def test_table_filename_stem(self) -> None:
         """Test method."""

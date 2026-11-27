@@ -73,7 +73,7 @@ Because Podman runs rootless, the Compose services publish HTTP on host port
 8080 and HTTPS/HTTP/3 on host port 8443 rather than using privileged ports 80
 and 443. Set up port forwarding on every machine that runs the Compose services:
 your local machine when developing locally, and the deployed server. On each
-Linux host with nftables and systemd you can run `sudo bash forward-ports.sh`
+Linux host with nftables and systemd you can run `sudo bash scripts/forward-ports.sh`
 from the project root to set up permanent port forwarding.
 
 When accessing the local site via `https://localhost`, Caddy's automatically
@@ -88,15 +88,15 @@ To add the plugin to your project, run:
 ```bash
 uv add pyrig-webapp --dev
 uv run pyrig sync
-sudo bash forward-ports.sh
+sudo bash scripts/forward-ports.sh
 ```
 
 Start the app and reverse proxy from the project root:
 
 ```bash
-bash compose-up.sh build
+bash scripts/compose-up.sh build
 # or to use the published image
-bash compose-up.sh pull
+bash scripts/compose-up.sh pull
 ```
 
 ## Components
@@ -140,13 +140,13 @@ Set `SITE_ADDRESS` to the hostname Caddy should serve. If it is unset, Compose
 uses `localhost`, which is suitable for local development. For automatic public
 HTTPS, use a domain that resolves to the host and ensure Caddy can reach the
 necessary external services and accept inbound traffic on ports 80 and 443.
-Because Compose maps those container ports to 8080 and 8443, `forward-ports.sh`
+Because Compose maps those container ports to 8080 and 8443, `scripts/forward-ports.sh`
 can install nftables redirects and a systemd service on Linux hosts using
 nftables and systemd.
 
 ### Port-forwarding script
 
-`ForwardPortsConfigFile` generates `forward-ports.sh`. Running it with
+`ForwardPortsConfigFile` generates `scripts/forward-ports.sh`. Running it with
 administrative privileges writes nftables rules under `/etc/nftables.d`,
 creates a systemd oneshot service, and uses `systemctl` to enable and start it.
 The rules redirect TCP port 80 to 8080 and TCP/UDP port 443 to 8443. This is

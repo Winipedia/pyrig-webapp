@@ -109,11 +109,6 @@ class ComposeConfigFile(BaseComposeConfigFile):
                 f"./{WebServer.I.config_dir().as_posix()}:/etc/caddy:ro",
                 f"{self.web_server_data_volume()}:/data",
             ],
-            "depends_on": {
-                self.service_app_name(): {
-                    "condition": "service_healthy",
-                },
-            },
             "healthcheck": self.web_server_healthcheck(),
             "cap_add": ["NET_BIND_SERVICE"],
         }

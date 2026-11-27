@@ -70,7 +70,7 @@ for local or production use.
 In addition to pyrig's requirements, you will also need the requirements for
 [pyrig-containers](https://github.com/Winipedia/pyrig-containers).
 For local composing port forwarding from ports 80/443 to 8080/8443 is required,
-you may use the `forward-ports.sh` script to set it up.
+you may use the `scripts/forward-ports.sh` script to set it up.
 You may need to trust Caddy's local certificate authority in your browser or
 operating system for local HTTPS to work without warnings.
 
@@ -89,24 +89,24 @@ operating system for local HTTPS to work without warnings.
   app alongside Caddy, with health checks, persistent Caddy data, and HTTP,
   HTTPS, and HTTP/3 ports published on higher host ports 8080 and 8443.
   to GHCR on release.
-- **Port forwarding** — `forward-ports.sh` sets up permanent forwarding from
-  ports 80/443 to the Compose-published ports 8080/8443.
+- **Port forwarding** — `scripts/forward-ports.sh` sets up permanent forwarding
+  from ports 80/443 to the Compose-published ports 8080/8443.
 
 ## Usage
 
 ```bash
 uv add pyrig-webapp --dev
 uv run pyrig sync
-sudo bash forward-ports.sh
+sudo bash scripts/forward-ports.sh
 ```
 
 After synchronization, edit the generated app module to build your application.
 Start the application and proxy together from the project root:
 
 ```bash
-bash compose-up.sh build
+bash scripts/compose-up.sh build
 # or to use the published image
-bash compose-up.sh pull
+bash scripts/compose-up.sh pull
 ```
 
 ## Documentation

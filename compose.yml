@@ -27,9 +27,6 @@
     "volumes":
       - "./caddy:/etc/caddy:ro"
       - "web-server-data:/data"
-    "depends_on":
-      "app":
-        "condition": "service_healthy"
     "restart": "unless-stopped"
     "healthcheck":
       "test":
