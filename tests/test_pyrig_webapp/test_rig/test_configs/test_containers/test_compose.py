@@ -70,7 +70,6 @@ class TestComposeConfigFile:
             },
             "ports": ["8080:80", "8443:443", "8443:443/udp"],
             "volumes": ["./caddy:/etc/caddy:ro", "web-server-data:/data"],
-            "depends_on": {"app": {"condition": "service_healthy"}},
             "restart": "unless-stopped",
             "healthcheck": ComposeConfigFile.I.web_server_healthcheck(),
             "cap_drop": ["ALL"],
@@ -87,7 +86,6 @@ class TestComposeConfigFile:
             "environment": {"SITE_ADDRESS": "${SITE_ADDRESS:-localhost}"},
             "ports": ["8080:80", "8443:443", "8443:443/udp"],
             "volumes": ["./caddy:/etc/caddy:ro", "web-server-data:/data"],
-            "depends_on": {"app": {"condition": "service_healthy"}},
             "healthcheck": ComposeConfigFile.I.web_server_healthcheck(),
             "cap_add": ["NET_BIND_SERVICE"],
         }
