@@ -1,7 +1,6 @@
 """Compose configuration management."""
 
 from collections.abc import Callable
-from types import MethodType
 from typing import Any, override
 from urllib import request
 from urllib.request import urlopen
@@ -44,7 +43,6 @@ class ComposeConfigFile(BaseComposeConfigFile):
     @override
     def service(
         self,
-        method: MethodType,
         *,
         restart: str | None = None,
         **kwargs: Any,
@@ -52,15 +50,13 @@ class ComposeConfigFile(BaseComposeConfigFile):
         """Return a service using the web app's default restart policy.
 
         Args:
-            method: The service method used to derive the service name.
             restart: Container restart policy; defaults to `unless-stopped`.
             **kwargs: Additional settings forwarded to the base service builder.
 
         Returns:
-            The named service configuration.
+            The service configuration.
         """
         return super().service(
-            method,
             restart="unless-stopped" if restart is None else restart,
             **kwargs,
         )
@@ -83,7 +79,6 @@ class ComposeConfigFile(BaseComposeConfigFile):
     def service_web_server(self) -> dict[str, Any]:
         """Return the Caddy service with the app as its upstream."""
         return self.service(
-            self.service_web_server,
             **self.service_web_server_settings(),
         )
 

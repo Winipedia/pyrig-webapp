@@ -39,10 +39,8 @@ class TestComposeConfigFile:
     def test_service(self) -> None:
         """Test method."""
         assert ComposeConfigFile.I.service(
-            ComposeConfigFile.I.service_app,
             environment={"MODE": "production"},
         ) == {
-            "service_name": "app",
             "environment": {"MODE": "production"},
             "restart": "unless-stopped",
             "cap_drop": ["ALL"],
@@ -50,7 +48,6 @@ class TestComposeConfigFile:
         }
         assert (
             ComposeConfigFile.I.service(
-                ComposeConfigFile.I.service_app,
                 restart="always",
             )["restart"]
             == "always"
@@ -63,7 +60,6 @@ class TestComposeConfigFile:
     def test_service_web_server(self) -> None:
         """Test method."""
         assert ComposeConfigFile.I.service_web_server() == {
-            "service_name": "web-server",
             "image": "docker.io/library/caddy:latest",
             "environment": {
                 "SITE_ADDRESS": "${SITE_ADDRESS:-localhost}",
@@ -92,10 +88,15 @@ class TestComposeConfigFile:
 
     def test_services(self) -> None:
         """Test method."""
-        assert ComposeConfigFile.I.services() == (
-            ComposeConfigFile.I.service_app,
-            ComposeConfigFile.I.service_web_server,
+        compose = ComposeConfigFile.I
+        assert compose.services() == (
+            compose.service_app,
+            compose.service_web_server,
         )
+        assert compose.services_configs() == {
+            "app": compose.service_app(),
+            "web-server": compose.service_web_server(),
+        }
 
     def test_web_server_data_volume(self) -> None:
         """Test method."""
